@@ -49,17 +49,17 @@ export async function loadNodesFromSupabase({ supabase, state, setStatus }) {
     .filter(Boolean);
 
   // override positions with local saved positions if present
-  const saved = loadSavedPositions();
-  for (const n of state.graph.nodes) {
-    const p = saved[n.id];
-    if (p) {
-      n.pos.set(p[0], p[1], p[2]);
-      n.vel.set(0, 0, 0);
-    }
-  }
+//   const saved = loadSavedPositions();
+//   for (const n of state.graph.nodes) {
+//     const p = saved[n.id];
+//     if (p) {
+//       n.pos.set(p[0], p[1], p[2]);
+//       n.vel.set(0, 0, 0);
+//     }
+//   }
 
-  setStatus?.(`Nodes loaded (Supabase): ${state.graph.nodes.length}`);
-}
+//   setStatus?.(`Nodes loaded (Supabase): ${state.graph.nodes.length}`);
+// }
 
 export async function loadLinksFromSupabase({ supabase, state, setStatus }) {
   setStatus?.("Loading links (Supabase)...");
