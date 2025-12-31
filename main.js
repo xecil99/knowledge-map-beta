@@ -1,4 +1,5 @@
 // main.js
+import { createSupabaseClient } from "./supabaseClient.js";
 import * as THREE from "three";
 import { state } from "./state.js";
 import { reloadGraph, createUpdateChecker } from "./data.js";
@@ -12,6 +13,21 @@ import {
   getNodeMeshes,
 } from "./scene.js";
 import { tickPhysics } from "./physics.js";
+
+const supabase = createSupabaseClient();
+
+// quick sanity check (remove later)
+supabase
+  .from("nodes")
+  .select("id")
+  .limit(1)
+  .then(({ data, error }) => {
+    if (error) {
+      console.error("Supabase error:", error);
+    } else {
+      console.log("Supabase connected. Sample:", data);
+    }
+  });
 
 // ---------- DOM ----------
 const statusEl = document.getElementById("status");
