@@ -42,5 +42,7 @@ export function initNodeSubmission({ supabase }) {
     submitStatusEl.textContent = "Submitted!";
     newLabelEl.value = "";
     newDefinitionEl.value = "";
+    location.reload();
+
   });
 }
