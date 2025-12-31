@@ -31,27 +31,43 @@
 
   <body>
     <div id="ui">
-      <div class="row">
-        <button id="btnRandom">Random demo data</button>
-        <button id="btnRecenter">Recenter</button>
-      </div>
+  <div class="row">
+    <button id="btnRandom">Random demo data</button>
+    <button id="btnRecenter">Recenter</button>
+  </div>
 
-      <div class="row">
-        <label>Link strength</label>
-        <input id="strength" type="range" min="0" max="1" step="0.01" value="0.5" />
-        <span id="strengthVal">0.50</span>
-      </div>
+  <div class="row">
+    <label>Link strength</label>
+    <input id="strength" type="range" min="0" max="1" step="0.01" value="0.5" />
+    <span id="strengthVal">0.50</span>
+  </div>
 
-      <div id="inspector">
-        <strong>Inspector Panel</strong><br /><br />
-        <strong>Node:</strong> <span id="inspector-id">(none)</span><br />
-        <strong>Label:</strong> <span id="inspector-label"></span><br />
-        <strong>Strength:</strong> <span id="inspector-strength"></span><br />
-        <strong>Definition:</strong> <span id="inspector-definition">(none)</span><br /><br />
-        <strong>Linked concepts:</strong>
-        <ul id="inspector-links"></ul>
-      </div>
-    </div>
+  <div id="inspector">
+    <strong>Inspector Panel</strong><br /><br />
+    <strong>Node:</strong> <span id="inspector-id">(none)</span><br />
+    <strong>Label:</strong> <span id="inspector-label"></span><br />
+    <strong>Strength:</strong> <span id="inspector-strength"></span><br />
+    <strong>Definition:</strong> <span id="inspector-definition">(none)</span><br /><br />
+    <strong>Linked concepts:</strong>
+    <ul id="inspector-links"></ul>
+  </div>
+
+  <hr />
+
+  <div id="submit">
+    <strong>Add a concept</strong><br /><br />
+
+    <label>Label</label><br />
+    <input id="newLabel" type="text" maxlength="60" style="width: 100%;" /><br /><br />
+
+    <label>Definition</label><br />
+    <textarea id="newDefinition" rows="4" maxlength="400" style="width: 100%;"></textarea><br /><br />
+
+    <button id="btnSubmitNode">Submit</button>
+    <span id="submitStatus" style="margin-left: 8px;"></span>
+  </div>
+</div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="module" src="./main.js"></script>
