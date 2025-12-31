@@ -23,6 +23,8 @@ export async function loadNodesFromSupabase({ supabase, state, setStatus }) {
   const { data, error } = await supabase
     .from("nodes")
     .select("node_id,label,definition,strength,x,y,z");
+    console.log("Supabase nodes rows:", (data || []).map(r => r.node_id));
+
 
   if (error) throw error;
 
