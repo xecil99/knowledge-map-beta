@@ -15,11 +15,12 @@ import {
 import { tickPhysics } from "./physics.js";
 import { loadNodesFromSupabase, loadLinksFromSupabase } from "./dataSupabase.js";
 import { initNodeSubmission } from "./submit.js";
-
+import { initAuthUI } from "./auth.js";
 
 console.log("main.js updated: supabase test running");
 
 const supabase = createSupabaseClient();
+initAuthUI({ supabase });
 
 initNodeSubmission({ supabase });
 
