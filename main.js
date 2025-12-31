@@ -13,6 +13,8 @@ import {
   getNodeMeshes,
 } from "./scene.js";
 import { tickPhysics } from "./physics.js";
+import { loadNodesFromSupabase } from "./dataSupabase.js";
+
 
 console.log("main.js updated: supabase test running");
 
@@ -169,7 +171,9 @@ function animate() {
 }
 
 // ---------- Boot ----------
-(async function boot() {
+try {
+  await loadNodesFromSupabase({ supabase, state, setStatus });
+  // keep links from Sheets for now:
   await reloadGraph({
     state,
     setStatus,
@@ -179,6 +183,18 @@ function animate() {
       updateRenderObjects({ state });
     },
   });
+} catch (e) {
+  console.error("Supabase nodes load failed, falling back to Sheets:", e);
+  await reloadGraph({
+    state,
+    setStatus,
+    rebuildScene: () => {
+      rebuildScene({ scene, state });
+      applySelectionVisuals({ state });
+      updateRenderObjects({ state });
+    },
+  });
+}
 
   animate();
 
