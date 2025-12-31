@@ -22,13 +22,13 @@ export async function loadNodesFromSupabase({ supabase, state, setStatus }) {
   setStatus?.("Loading nodes (Supabase)...");
   const { data, error } = await supabase
     .from("nodes")
-    .select("id,label,definition,strength,x,y,z");
+    .select("node_id,label,definition,strength,x,y,z");
 
   if (error) throw error;
 
   state.graph.nodes = (data || [])
     .map((r) => {
-      const id = cleanId(r.id);
+      const id = cleanId(r.node_id);
       if (!id) return null;
 
       const node = {
