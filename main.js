@@ -2,7 +2,7 @@
 import { createSupabaseClient } from "./supabaseClient.js";
 import * as THREE from "three";
 import { state } from "./state.js";
-import { reloadGraph, createUpdateChecker } from "./data.js";
+import { loadLinksOnce, createUpdateChecker } from "./data.js";
 import { setInspector } from "./inspector.js";
 import { installSelectionPicking } from "./interaction.js";
 import {
@@ -173,18 +173,18 @@ function animate() {
 // ---------- Boot ----------
 try {
   await loadNodesFromSupabase({ supabase, state, setStatus });
-  // keep links from Sheets for now:
-  await reloadGraph({
-    state,
-    setStatus,
-    rebuildScene: () => {
-      rebuildScene({ scene, state });
-      applySelectionVisuals({ state });
-      updateRenderObjects({ state });
-    },
-  });
+  await loadLinksOnce({ state, setStatus });
+
+  rebuildScene({ scene, state });
+  applySelectionVisuals({ state });
+  updateRenderObjects({ state });
+
+  setStatus("Loaded nodes from Supabase + links from Sheets.");
 } catch (e) {
   console.error("Supabase nodes load failed, falling back to Sheets:", e);
+
+  // full fallback: Sheets nodes + links
+  const { reloadGraph } = await import("./data.js");
   await reloadGraph({
     state,
     setStatus,
