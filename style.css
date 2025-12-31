@@ -1,0 +1,26 @@
+/* style.css */
+html, body { margin: 0; height: 100%; overflow: hidden; }
+canvas { display: block; }
+
+#ui{
+  position: absolute; top: 12px; left: 12px;
+  background: rgba(255,255,255,0.92);
+  padding: 10px 12px; border-radius: 10px;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  font-size: 14px; max-width: 320px;
+  user-select: none;
+}
+
+#inspector {
+  max-height: 60vh;
+  overflow-y: auto;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+.row{ display:flex; gap:10px; align-items:center; margin:8px 0; }
+.row.small{ font-size: 12px; opacity: 0.85; }
+button{ padding:6px 10px; cursor:pointer; }
+input[type="range"]{ flex: 1; }
+label{ width: 92px; }

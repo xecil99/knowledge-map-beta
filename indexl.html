@@ -1,0 +1,58 @@
+<!-- index.html -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Knowledge Map – Prototype</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.161.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.161.0/examples/jsm/"
+        }
+      }
+    </script>
+
+    <style>
+      #inspector-links li {
+        color: #1a73e8;
+        text-decoration: underline;
+        cursor: pointer;
+        margin-left: 1em;
+      }
+      #inspector-links li:hover {
+        color: #174ea6;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="ui">
+      <div class="row">
+        <button id="btnRandom">Random demo data</button>
+        <button id="btnRecenter">Recenter</button>
+      </div>
+
+      <div class="row">
+        <label>Link strength</label>
+        <input id="strength" type="range" min="0" max="1" step="0.01" value="0.5" />
+        <span id="strengthVal">0.50</span>
+      </div>
+
+      <div id="inspector">
+        <strong>Inspector Panel</strong><br /><br />
+        <strong>Node:</strong> <span id="inspector-id">(none)</span><br />
+        <strong>Label:</strong> <span id="inspector-label"></span><br />
+        <strong>Strength:</strong> <span id="inspector-strength"></span><br />
+        <strong>Definition:</strong> <span id="inspector-definition">(none)</span><br /><br />
+        <strong>Linked concepts:</strong>
+        <ul id="inspector-links"></ul>
+      </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
