@@ -13,8 +13,7 @@ import {
   getNodeMeshes,
 } from "./scene.js";
 import { tickPhysics } from "./physics.js";
-import { loadNodesFromSupabase } from "./dataSupabase.js";
-
+import { loadNodesFromSupabase, loadLinksFromSupabase } from "./dataSupabase.js";
 
 console.log("main.js updated: supabase test running");
 
@@ -173,7 +172,7 @@ function animate() {
 // ---------- Boot ----------
 try {
   await loadNodesFromSupabase({ supabase, state, setStatus });
-  await loadLinksOnce({ state, setStatus });
+  await loadLinksFromSupabase({ supabase, state, setStatus });
 
   rebuildScene({ scene, state });
   applySelectionVisuals({ state });
