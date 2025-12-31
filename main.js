@@ -14,6 +14,8 @@ import {
 } from "./scene.js";
 import { tickPhysics } from "./physics.js";
 
+console.log("main.js updated: supabase test running");
+
 const supabase = createSupabaseClient();
 
 // quick sanity check (remove later)
