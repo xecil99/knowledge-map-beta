@@ -213,4 +213,4 @@ try {
   });
 
   setInterval(checkForUpdates, 1500);
-})();
+();
