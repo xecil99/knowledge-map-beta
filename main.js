@@ -152,9 +152,14 @@ document.getElementById("btnRecenter")?.addEventListener("click", () => {
   setStatus("Recentered.");
 });
 
-document.getElementById("btnRandom")?.addEventListener("click", () => {
-  setStatus("Random demo disabled in this cleaned file.");
-});
+const resetBtn = document.getElementById("btnResetLayout");
+
+if (resetBtn) {
+  resetBtn.addEventListener("click", () => {
+    localStorage.removeItem("km_positions");
+    location.reload();
+  });
+};
 
 // ---------- Resize ----------
 window.addEventListener("resize", () => {
