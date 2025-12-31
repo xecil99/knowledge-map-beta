@@ -1,8 +1,13 @@
 // auth.js
 export function initAuthUI({ supabase }) {
-  const btnLogin = document.getElementById("btnLogin");
+    console.log("initAuthUI loaded", {
+    hasBtnLogin: !!document.getElementById("btnLogin"),
+    hasAuth: !!supabase?.auth,
+    });
+const btnLogin = document.getElementById("btnLogin");
   const btnLogout = document.getElementById("btnLogout");
   const authStatus = document.getElementById("authStatus");
+
 
   function setUI(user) {
     if (user) {
@@ -17,6 +22,8 @@ export function initAuthUI({ supabase }) {
   }
 
   btnLogin?.addEventListener("click", async () => {
+      console.log("Sign-in clicked");
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "github",
       options: {
