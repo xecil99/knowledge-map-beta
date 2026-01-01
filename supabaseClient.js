@@ -1,7 +1,7 @@
 // supabaseClient.js
 export function createSupabaseClient() {
-  const url = "PASTE_PROJECT_URL_HERE";
-  const anonKey = "PASTE_ANON_PUBLIC_KEY_HERE";
+  const url = "https://xecil99.github.io/knowledge-map-beta/";
+  const anonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3ZWViZWZ5b2xodWJuc3BpaHprIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxMjAxMDIsImV4cCI6MjA4MjY5NjEwMn0.wXH218qQye5ZPncCQ03tZlijEQwKJNNYSvCvaFPt0EA";
 
   return window.supabase.createClient(url, anonKey, {
     auth: {
