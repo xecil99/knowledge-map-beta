@@ -33,6 +33,11 @@ btnLogin?.addEventListener("click", async () => {
 
   console.log("signInWithOAuth result", { data, error });
 
+  if (data?.url) {
+  window.location.assign(data.url);
+  return;
+}
+
   if (error) {
     console.error(error);
     authStatus.textContent = `Sign-in failed: ${error.message}`;
