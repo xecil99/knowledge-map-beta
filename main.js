@@ -1,10 +1,11 @@
 // main.js
-import { createSupabaseClient } from "./supabaseClient.js";
 import * as THREE from "three";
+import { createSupabaseClient } from "./supabaseClient.js";
 import { state } from "./state.js";
-import { loadLinksOnce, createUpdateChecker } from "./data.js";
+
 import { setInspector } from "./inspector.js";
 import { installSelectionPicking } from "./interaction.js";
+
 import {
   createThreeApp,
   rebuildScene,
@@ -12,30 +13,18 @@ import {
   updateRenderObjects,
   getNodeMeshes,
 } from "./scene.js";
+
 import { tickPhysics } from "./physics.js";
 import { loadNodesFromSupabase, loadLinksFromSupabase } from "./dataSupabase.js";
+
 import { initNodeSubmission } from "./submit.js";
 import { initAuthUI } from "./auth.js";
 
-console.log("main.js updated: supabase test running");
+console.log("main.js updated: supabase");
 
 const supabase = createSupabaseClient();
 initAuthUI({ supabase });
-
 initNodeSubmission({ supabase });
-
-// quick sanity check (remove later)
-supabase
-  .from("nodes")
-  .select("id")
-  .limit(1)
-  .then(({ data, error }) => {
-    if (error) {
-      console.error("Supabase error:", error);
-    } else {
-      console.log("Supabase connected. Sample:", data);
-    }
-  });
 
 // ---------- DOM ----------
 const statusEl = document.getElementById("status");
@@ -44,12 +33,6 @@ const strengthValEl = document.getElementById("strengthVal");
 const setStatus = (t) => statusEl && (statusEl.textContent = t);
 
 // ---------- Utils ----------
-function clamp01(x) {
-  const n = Number(x);
-  if (!Number.isFinite(n)) return null;
-  return Math.max(0, Math.min(1, n));
-}
-
 function nowMs() {
   return performance.now();
 }
@@ -96,6 +79,7 @@ function selectNode(id, moveCamera = false) {
 
   const neighborIds = computeNeighborSet(node.id);
   neighborIds.delete(node.id);
+
   setInspector({
     node,
     neighborIds,
@@ -118,31 +102,9 @@ installSelectionPicking({
   selectNode,
 });
 
-  // Springs
-  const map = idToNodeMap();
-  const globalStrength = Number(strengthEl.value);
-
-  for (const L of state.graph.links) {
-    const a = map.get(L.a);
-    const b = map.get(L.b);
-    if (!a || !b) continue;
-
-    const d = new THREE.Vector3().subVectors(b.pos, a.pos);
-    const dist = Math.max(0.001, d.length());
-    const w = clamp01(L.w * 0.7 + globalStrength * 0.3) ?? 0.5;
-
-    const rest = params.baseRest * (1.2 - w);
-    const k = params.linkK * (0.5 + w);
-
-    const stretch = dist - rest;
-    const f = d.normalize().multiplyScalar(k * stretch);
-    a.vel.add(f);
-    b.vel.sub(f);
-  }
-
 // ---------- UI ----------
-strengthEl.addEventListener("input", () => {
-  strengthValEl.textContent = Number(strengthEl.value).toFixed(2);
+strengthEl?.addEventListener("input", () => {
+  if (strengthValEl) strengthValEl.textContent = Number(strengthEl.value).toFixed(2);
 });
 
 document.getElementById("btnRecenter")?.addEventListener("click", () => {
@@ -153,14 +115,10 @@ document.getElementById("btnRecenter")?.addEventListener("click", () => {
   setStatus("Recentered.");
 });
 
-const resetBtn = document.getElementById("btnResetLayout");
-
-if (resetBtn) {
-  resetBtn.addEventListener("click", () => {
-    localStorage.removeItem("km_positions");
-    location.reload();
-  });
-};
+document.getElementById("btnResetLayout")?.addEventListener("click", () => {
+  localStorage.removeItem("km_positions");
+  location.reload();
+});
 
 // ---------- Resize ----------
 window.addEventListener("resize", () => {
@@ -172,7 +130,7 @@ window.addEventListener("resize", () => {
 // ---------- Animate ----------
 function animate() {
   requestAnimationFrame(animate);
-  tickPhysics({ state, globalStrength: Number(strengthEl.value) });
+  tickPhysics({ state, globalStrength: Number(strengthEl?.value ?? 0.5) });
   updateRenderObjects({ state });
   savePositionsThrottled();
   controls.update();
@@ -180,70 +138,32 @@ function animate() {
 }
 
 // ---------- Boot ----------
-try {
-  await loadNodesFromSupabase({ supabase, state, setStatus });
-  await loadLinksFromSupabase({ supabase, state, setStatus });
+async function boot() {
+  try {
+    await loadNodesFromSupabase({ supabase, state, setStatus });
+    await loadLinksFromSupabase({ supabase, state, setStatus });
 
-  rebuildScene({ scene, state });
-  applySelectionVisuals({ state });
-  updateRenderObjects({ state });
+    rebuildScene({ scene, state });
+    applySelectionVisuals({ state });
+    updateRenderObjects({ state });
 
-try {
-  await loadNodesFromSupabase({ supabase, state, setStatus });
-  await loadLinksFromSupabase({ supabase, state, setStatus });
+    setStatus(`Loaded nodes + links from Supabase (${state.graph.nodes.length} / ${state.graph.links.length}).`);
+  } catch (e) {
+    console.error("Supabase load failed, falling back to Sheets:", e);
 
-  rebuildScene({ scene, state });
-  applySelectionVisuals({ state });
-  updateRenderObjects({ state });
-
-  setStatus("Loaded nodes + links from Supabase.");
-} catch (e) {
-  console.error("Supabase load failed, falling back to Sheets:", e);
-
-  const { reloadGraph } = await import("./data.js");
-  await reloadGraph({
-    state,
-    setStatus,
-    rebuildScene: () => {
-      rebuildScene({ scene, state });
-      applySelectionVisuals({ state });
-      updateRenderObjects({ state });
-    },
-  });
-}
-
-
-//   setStatus("Loaded nodes from Supabase + links from Sheets.");
-// } catch (e) {
-//   console.error("Supabase nodes load failed, falling back to Sheets:", e);
-
-//   // full fallback: Sheets nodes + links
-//   const { reloadGraph } = await import("./data.js");
-//   await reloadGraph({
-//     state,
-//     setStatus,
-//     rebuildScene: () => {
-//       rebuildScene({ scene, state });
-//       applySelectionVisuals({ state });
-//       updateRenderObjects({ state });
-//     },
-//   });
-// }
+    const { reloadGraph } = await import("./data.js");
+    await reloadGraph({
+      state,
+      setStatus,
+      rebuildScene: () => {
+        rebuildScene({ scene, state });
+        applySelectionVisuals({ state });
+        updateRenderObjects({ state });
+      },
+    });
+  }
 
   animate();
+}
 
-  // const checkForUpdates = createUpdateChecker({
-  //   setStatus,
-  //   onChangeReload: async () =>
-  //     reloadGraph({
-  //       state,
-  //       setStatus,
-  //       rebuildScene: () => {
-  //         rebuildScene({ scene, state });
-  //         applySelectionVisuals({ state });
-  //         updateRenderObjects({ state });
-  //       },
-  //     }),
-  // });
-
-  // setInterval(checkForUpdates, 1500)
+boot();
