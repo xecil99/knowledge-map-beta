@@ -21,20 +21,23 @@ const btnLogin = document.getElementById("btnLogin");
     }
   }
 
-  btnLogin?.addEventListener("click", async () => {
-      console.log("Sign-in clicked");
+btnLogin?.addEventListener("click", async () => {
+  console.log("Sign-in clicked", window.location.href);
 
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "github",
-      options: {
-        redirectTo: window.location.href,
-      },
-    });
-    if (error) {
-      console.error(error);
-      authStatus.textContent = "Sign-in failed.";
-    }
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "github",
+    options: {
+      redirectTo: window.location.origin + window.location.pathname,
+    },
   });
+
+  console.log("signInWithOAuth result", { data, error });
+
+  if (error) {
+    console.error(error);
+    authStatus.textContent = `Sign-in failed: ${error.message}`;
+  }
+});
 
   btnLogout?.addEventListener("click", async () => {
     const { error } = await supabase.auth.signOut();
