@@ -188,11 +188,18 @@ try {
   applySelectionVisuals({ state });
   updateRenderObjects({ state });
 
-  setStatus("Loaded nodes from Supabase + links from Sheets.");
-} catch (e) {
-  console.error("Supabase nodes load failed, falling back to Sheets:", e);
+try {
+  await loadNodesFromSupabase({ supabase, state, setStatus });
+  await loadLinksFromSupabase({ supabase, state, setStatus });
 
-  // full fallback: Sheets nodes + links
+  rebuildScene({ scene, state });
+  applySelectionVisuals({ state });
+  updateRenderObjects({ state });
+
+  setStatus("Loaded nodes + links from Supabase.");
+} catch (e) {
+  console.error("Supabase load failed, falling back to Sheets:", e);
+
   const { reloadGraph } = await import("./data.js");
   await reloadGraph({
     state,
@@ -205,20 +212,38 @@ try {
   });
 }
 
+
+//   setStatus("Loaded nodes from Supabase + links from Sheets.");
+// } catch (e) {
+//   console.error("Supabase nodes load failed, falling back to Sheets:", e);
+
+//   // full fallback: Sheets nodes + links
+//   const { reloadGraph } = await import("./data.js");
+//   await reloadGraph({
+//     state,
+//     setStatus,
+//     rebuildScene: () => {
+//       rebuildScene({ scene, state });
+//       applySelectionVisuals({ state });
+//       updateRenderObjects({ state });
+//     },
+//   });
+// }
+
   animate();
 
-  const checkForUpdates = createUpdateChecker({
-    setStatus,
-    onChangeReload: async () =>
-      reloadGraph({
-        state,
-        setStatus,
-        rebuildScene: () => {
-          rebuildScene({ scene, state });
-          applySelectionVisuals({ state });
-          updateRenderObjects({ state });
-        },
-      }),
-  });
+  // const checkForUpdates = createUpdateChecker({
+  //   setStatus,
+  //   onChangeReload: async () =>
+  //     reloadGraph({
+  //       state,
+  //       setStatus,
+  //       rebuildScene: () => {
+  //         rebuildScene({ scene, state });
+  //         applySelectionVisuals({ state });
+  //         updateRenderObjects({ state });
+  //       },
+  //     }),
+  // });
 
-  setInterval(checkForUpdates, 1500);
+  // setInterval(checkForUpdates, 1500);
