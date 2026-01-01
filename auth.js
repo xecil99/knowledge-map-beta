@@ -22,7 +22,8 @@ const btnLogin = document.getElementById("btnLogin");
   }
 
 btnLogin?.addEventListener("click", async () => {
-  console.log("Sign-in clicked", window.location.href);
+
+  console.log("AUTH: Sign-in clicked");
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "github",
