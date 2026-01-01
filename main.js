@@ -246,4 +246,4 @@ try {
   //     }),
   // });
 
-  // setInterval(checkForUpdates, 1500);
+  // setInterval(checkForUpdates, 1500)
