@@ -55,6 +55,22 @@ btnLogin?.addEventListener("click", async () => {
     setUI(null);
   });
 
+    // If we returned from GitHub with an auth code, exchange it for a session
+  const url = new URL(window.location.href);
+  if (url.searchParams.get("code")) {
+    supabase.auth.exchangeCodeForSession(window.location.href).then(({ error }) => {
+      if (error) {
+        console.error("exchangeCodeForSession error:", error);
+      }
+      // Clean the URL so it doesn't re-run on refresh
+      window.history.replaceState(
+        {},
+        document.title,
+        window.location.origin + window.location.pathname
+      );
+    });
+  }
+
   // initial state + updates
   supabase.auth.getUser().then(({ data }) => setUI(data?.user || null));
   supabase.auth.onAuthStateChange((_event, session) =>
