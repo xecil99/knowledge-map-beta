@@ -120,6 +120,19 @@ document.getElementById("btnResetLayout")?.addEventListener("click", () => {
   location.reload();
 });
 
+document.getElementById("btnRecenter")?.addEventListener("click", () => {
+  const c = new THREE.Vector3();
+  for (const n of state.graph.nodes) c.add(n.pos);
+  c.multiplyScalar(1 / Math.max(1, state.graph.nodes.length));
+  for (const n of state.graph.nodes) n.pos.sub(c);
+  setStatus("Recentered.");
+});
+
+document.getElementById("btnResetLayout")?.addEventListener("click", () => {
+  localStorage.removeItem("km_positions");
+  location.reload();
+});
+
 // ---------- Resize ----------
 window.addEventListener("resize", () => {
   camera.aspect = innerWidth / innerHeight;
