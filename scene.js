@@ -2,6 +2,8 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
+console.log("scene.js vX loaded");
+
 // Owned by this module (do not reassign; cleared in place)
 const nodeMeshes = [];
 let linkLines = null;

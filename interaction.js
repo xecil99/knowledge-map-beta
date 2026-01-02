@@ -1,6 +1,8 @@
 // interaction.js
 // Handles pointer input for selecting nodes without interfering with OrbitControls.
 
+console.log("interaction.js vX loaded");
+
 export function installSelectionPicking({
   domElement,
   camera,

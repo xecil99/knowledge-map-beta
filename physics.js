@@ -1,6 +1,8 @@
 // physics.js
 // Force-directed layout (no rendering, no DOM)
 
+console.log("physics.js vX loaded");
+
 import * as THREE from "three";
 
 export const physicsParams = {
