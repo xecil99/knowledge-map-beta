@@ -148,20 +148,10 @@ async function boot() {
     updateRenderObjects({ state });
 
     setStatus(`Loaded nodes + links from Supabase (${state.graph.nodes.length} / ${state.graph.links.length}).`);
-  } catch (e) {
-    console.error("Supabase load failed, falling back to Sheets:", e);
-
-    const { reloadGraph } = await import("./data.js");
-    await reloadGraph({
-      state,
-      setStatus,
-      rebuildScene: () => {
-        rebuildScene({ scene, state });
-        applySelectionVisuals({ state });
-        updateRenderObjects({ state });
-      },
-    });
-  }
+} catch (e) {
+  console.error("Supabase load failed:", e);
+  setStatus("Supabase load failed — see console.");
+}
 
   animate();
 }
