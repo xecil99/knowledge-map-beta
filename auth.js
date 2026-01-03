@@ -22,6 +22,8 @@ export function initAuthUI({ supabase }) {
     setUI(data?.session?.user || null);
   });
 
+  supabase.auth.getSession().then(({ data }) => console.log("SESSION:", data.session));
+
   supabase.auth.onAuthStateChange((_event, session) => {
     setUI(session?.user || null);
   });
