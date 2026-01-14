@@ -3,6 +3,10 @@ export function initAuthUI({ supabase }) {
   const btnLogin = document.getElementById("btnLogin");
   const btnLogout = document.getElementById("btnLogout");
   const authStatus = document.getElementById("authStatus");
+  const emailEl = document.getElementById("authEmail");
+    const passEl = document.getElementById("authPassword");
+    const btnSignup = document.getElementById("btnSignup");
+
 
   function setUI(user) {
     if (user) {
@@ -27,6 +31,24 @@ export function initAuthUI({ supabase }) {
   supabase.auth.onAuthStateChange((_event, session) => {
     setUI(session?.user || null);
   });
+
+  btnSignup?.addEventListener("click", async () => {
+  const email = emailEl?.value?.trim();
+  const password = passEl?.value;
+
+  if (!email || !password) {
+    authStatus.textContent = "Enter email and password.";
+    return;
+  }
+
+  const { error } = await supabase.auth.signUp({ email, password });
+  if (error) {
+    authStatus.textContent = `Sign-up failed: ${error.message}`;
+    return;
+  }
+
+  authStatus.textContent = "Check your email to confirm your account.";
+});
 
   btnLogin?.addEventListener("click", async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
