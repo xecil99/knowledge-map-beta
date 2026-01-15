@@ -1,11 +1,12 @@
 // auth.js
 export function initAuthUI({ supabase }) {
-  const btnLogin = document.getElementById("btnLogin");
-  const btnLogout = document.getElementById("btnLogout");
-  const authStatus = document.getElementById("authStatus");
-  const emailEl = document.getElementById("authEmail");
+    const btnLogin = document.getElementById("btnLogin");
+    const btnLogout = document.getElementById("btnLogout");
+    const authStatus = document.getElementById("authStatus");
+    const emailEl = document.getElementById("authEmail");
     const passEl = document.getElementById("authPassword");
     const btnSignup = document.getElementById("btnSignup");
+    console.log("btnSignup is", document.getElementById("btnSignup"));
 
 
   function setUI(user) {
