@@ -34,6 +34,10 @@ export function initAuthUI({ supabase }) {
   });
 
   btnSignup?.addEventListener("click", async () => {
+    console.log("BEFORE authStatus:", authStatus?.textContent);
+authStatus.textContent = "Signup button clicked";
+console.log("AFTER authStatus:", authStatus?.textContent);
+
     authStatus.textContent = "Signup button clicked";
   const email = emailEl?.value?.trim();
   const password = passEl?.value;
