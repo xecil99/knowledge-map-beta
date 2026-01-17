@@ -23,7 +23,10 @@ import { initAuthUI } from "./auth.js";
 console.log("main.js updated: supabase");
 
 const supabase = createSupabaseClient();
-initAuthUI({ supabase });
+// initAuthUI({ supabase });
+window.addEventListener("DOMContentLoaded", () => {
+  initAuthUI({ supabase });
+});
 initNodeSubmission({ supabase });
 
 // ---------- DOM ----------
