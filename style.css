@@ -1,26 +1,76 @@
-/* style.css */
-html, body { margin: 0; height: 100%; overflow: hidden; }
-canvas { display: block; }
-
+/* UI panel */
 #ui{
-  position: absolute; top: 12px; left: 12px;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  width: 360px;
+  max-height: calc(100vh - 24px);
+  overflow: auto;
+  padding: 12px;
+  border-radius: 10px;
   background: rgba(255,255,255,0.92);
-  padding: 10px 12px; border-radius: 10px;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  font-size: 14px; max-width: 320px;
-  user-select: none;
+  color: #111;
+  font: 14px/1.35 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
 
-#inspector {
-  max-height: 60vh;
-  overflow-y: auto;
-  border-top: 1px solid rgba(0,0,0,0.1);
-  margin-top: 8px;
-  padding-top: 8px;
+/* Rows */
+#ui .row{
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
 }
 
-.row{ display:flex; gap:10px; align-items:center; margin:8px 0; }
-.row.small{ font-size: 12px; opacity: 0.85; }
-button{ padding:6px 10px; cursor:pointer; }
-input[type="range"]{ flex: 1; }
-label{ width: 92px; }
+/* Inputs/buttons */
+#ui input, #ui textarea{
+  color: #111;
+  background: #fff;
+  border: 1px solid #cfcfcf;
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+#ui button{
+  color: #111;
+  background: #f3f3f3;
+  border: 1px solid #cfcfcf;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+#ui button:hover{ background:#e9e9e9; }
+
+#authStatus, #submitStatus{
+  color:#111;
+  font-weight: 600;
+}
+
+/* Inspector */
+#inspector{
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.95);
+  border: 1px solid #ddd;
+}
+
+#inspector strong{ color:#111; }
+#inspector span{ color:#111; }
+
+/* Links list in inspector */
+#inspector-links{
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+
+#inspector-links li{
+  color:#1a73e8;
+  text-decoration: underline;
+  cursor: pointer;
+  margin: 4px 0;
+}
+
+#inspector-links li:hover{ color:#174ea6; }
