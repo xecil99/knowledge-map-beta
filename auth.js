@@ -15,10 +15,11 @@ export function initAuthUI({ supabase }) {
       btnLogin.style.display = "none";
       btnLogout.style.display = "";
       authStatus.textContent = "Signed in";
-    } else {
+    }   
+    else {
       btnLogin.style.display = "";
       btnLogout.style.display = "none";
-      authStatus.textContent = "Viewing (not signed in)";
+      authStatus.textContent = "Viewing (not signed in)"; 
     }
   }
 
