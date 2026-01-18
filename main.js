@@ -26,8 +26,9 @@ const supabase = createSupabaseClient();
 // initAuthUI({ supabase });
 window.addEventListener("DOMContentLoaded", () => {
   initAuthUI({ supabase });
+  initNodeSubmission({ supabase });
 });
-initNodeSubmission({ supabase });
+
 
 // ---------- DOM ----------
 const statusEl = document.getElementById("status");
@@ -108,19 +109,6 @@ installSelectionPicking({
 // ---------- UI ----------
 strengthEl?.addEventListener("input", () => {
   if (strengthValEl) strengthValEl.textContent = Number(strengthEl.value).toFixed(2);
-});
-
-document.getElementById("btnRecenter")?.addEventListener("click", () => {
-  const c = new THREE.Vector3();
-  for (const n of state.graph.nodes) c.add(n.pos);
-  c.multiplyScalar(1 / Math.max(1, state.graph.nodes.length));
-  for (const n of state.graph.nodes) n.pos.sub(c);
-  setStatus("Recentered.");
-});
-
-document.getElementById("btnResetLayout")?.addEventListener("click", () => {
-  localStorage.removeItem("km_positions");
-  location.reload();
 });
 
 document.getElementById("btnRecenter")?.addEventListener("click", () => {
