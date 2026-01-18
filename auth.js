@@ -10,6 +10,7 @@ export function initAuthUI({ supabase }) {
 
 
   function setUI(user) {
+    console.log("setUI ran, setting authStatus to:", user ? "Signed in" : "Viewing (not signed in)");
     if (user) {
       btnLogin.style.display = "none";
       btnLogout.style.display = "";
@@ -35,8 +36,8 @@ export function initAuthUI({ supabase }) {
 
   btnSignup?.addEventListener("click", async () => {
     console.log("BEFORE authStatus:", authStatus?.textContent);
-authStatus.textContent = "Signup button clicked";
-console.log("AFTER authStatus:", authStatus?.textContent);
+    authStatus.textContent = "Signup button clicked";
+    console.log("AFTER authStatus:", authStatus?.textContent);
 
     authStatus.textContent = "Signup button clicked";
   const email = emailEl?.value?.trim();
