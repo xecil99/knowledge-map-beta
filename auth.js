@@ -46,7 +46,7 @@ export function initAuthUI({ supabase }) {
 
   const { error } = await supabase.auth.signUp({ email, password });
   if (error) {
-    authStatus.textContent = `Sign-up failed: ${error.message}`;
+    authStatus.textContent = `Sign-up failed: ${JSON.stringify(error)}`;
     return;
   }
 
